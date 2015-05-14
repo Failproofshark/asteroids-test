@@ -19,11 +19,11 @@
     (:documentation "How to draw the sprite to the screen"))
 
 (defmethod draw (Sprite)
-  (with-accessors ((color color)) Sprite
+  (with-accessors ((color color) (x x) (y y) (width width) (height height)) Sprite
     (gl:begin :quads)
     (apply #'gl:color color)
-    (gl:vertex (left Sprite) (top Sprite))
-    (gl:vertex (right Sprite) (top Sprite))
-    (gl:vertex (right Sprite) (bottom Sprite))
-    (gl:vertex (left Sprite) (bottom Sprite))
+    (gl:vertex (* -1 (/ width 2)) (/ height 2))
+    (gl:vertex (/ width 2) (/ height 2))
+    (gl:vertex (/ width 2) (* -1 (/ height 2)))
+    (gl:vertex (* -1 (/ width 2)) (* -1 (/ height 2)))
     (gl:end)))
