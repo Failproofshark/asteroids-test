@@ -2,6 +2,7 @@
 (defsystem "asteroids"
   :depends-on (:sdl2)
   :components ((:file "box")
+               (:file "helpers")
                (:file "sprite" :depends-on ("box"))
-               (:file "ship" :depends-on ("sprite"))
+               (:file "ship" :depends-on ("sprite" "helpers"))
                (:file "main" :depends-on ("box" "sprite"))))
