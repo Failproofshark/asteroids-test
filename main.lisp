@@ -3,10 +3,7 @@
 (defpackage :asteroids
   (:use :cl
         :sdl2
-        ;;Unsure if box and sprite will really be needed
-        :asteroids.entities.box
-        :asteroids.entities.sprite
-        :asteroids.entities.ship))
+        :asteroid.entities))
 
 (in-package :asteroids)
 

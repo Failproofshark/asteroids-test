@@ -1,16 +1,4 @@
-(in-package :cl-user)
-(defpackage :asteroids.entities.math-vector
-  (:documentation "A small helper library for vectors *should only be used for 2d maths*")
-  (:use :cl
-        :asteroids.helpers)
-  (:export :math-vector
-           :direction
-           :magnitude
-           :get-x-component
-           :get-y-component
-           :get-vector-components
-           :vector+))
-(in-package :asteroids.entities.math-vector)
+(in-package :asteroid.entities)
 ;; Named to distinguish itself from the vector data structure
 (defclass Math-Vector ()
   ;; IN DEGREES!

@@ -1,12 +1,4 @@
-(in-package :cl-user)
-(defpackage :asteroids.entities.sprite
-  (:use :cl
-        :asteroids.entities.box)
-  (:export :sprite
-           :color
-           :draw))
-
-(in-package :asteroids.entities.sprite)
+(in-package :asteroid.entities)
 
 (require :cl-opengl)
 

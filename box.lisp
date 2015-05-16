@@ -1,20 +1,4 @@
-(in-package :cl-user)
-
-(defpackage :asteroids.entities.box
-  (:use :cl)
-  (:export :Box
-           :x
-           :y
-           :width
-           :height
-           :top
-           :bottom
-           :left
-           :right
-           :center-x
-           :center-y))
-
-(in-package :asteroids.entities.box)
+(in-package :asteroid.entities)
 
 (defclass Box ()
   ((x :initarg :x

@@ -1,16 +1,4 @@
-(in-package :cl-user)
-(defpackage :asteroids.entities.ship
-  (:use :cl
-        :sdl2
-        :asteroids.entities.box
-        :asteroids.entities.sprite
-        :asteroids.entities.math-vector)
-  (:export :ship
-           :update
-           :handle-keydown-input
-           :handle-keyup-input))
-
-(in-package :asteroids.entities.ship)
+(in-package :asteroid.entities)
 
 (require :cl-opengl)
 
@@ -38,9 +26,6 @@
 
 (defgeneric handle-keyup-input (Ship scancode)
   (:documentation "Handle keyup events from the user"))
-
-(defgeneric update (ship)
-  (:documentation "An update routine for any possible changes to it's position and perhaps more"))
 
 (defmethod handle-keydown-input ((ship ship) scancode)
   (with-accessors ((rotation-angle rotation-angle) (acceleration acceleration) (x x) (y y)) ship
