@@ -1,4 +1,4 @@
-(in-package :asteroid.entities)
+(in-package :asteroids.entities)
 
 (require :cl-opengl)
 

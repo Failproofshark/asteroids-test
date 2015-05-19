@@ -1,3 +1,3 @@
-(in-package :asteroid.entities)
+(in-package :asteroids.entities)
 (defclass Entity (Sprite) nil)
 (defgeneric update (Entity))

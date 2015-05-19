@@ -1,4 +1,4 @@
-(in-package :asteroid.entities)
+(in-package :asteroids.entities)
 ;; Named to distinguish itself from the vector data structure
 (defclass Math-Vector ()
   ;; IN DEGREES!

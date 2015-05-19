@@ -3,14 +3,15 @@
 (defpackage :asteroids
   (:use :cl
         :sdl2
-        :asteroid.entities))
+        :asteroids.entities))
 
 (in-package :asteroids)
 
 (require :cl-opengl)
 ;;IDEA
 (defun rungame ()
-  (let ((player (make-instance 'Ship :x 400 :y 300)))
+  (let ((player (make-instance 'Ship :x 400 :y 300))
+        (asteroid (make-instance 'Asteroid :hit-points 3)))
     (with-init (:everything)
       (with-window (my-window :title "Asteroids" :flags '(:shown :opengl))
         (with-gl-context (gl-context my-window)
@@ -32,7 +33,9 @@
              (let ((scancode (scancode-value keysym)))
                (handle-keyup-input player scancode)))
             (:idle ()
+                   ;;TODO keep all game entities in a list to process through for boundary checking
                    (update player)
+                   (update asteroid)
                    (when (< (x player) 0)
                      (setf (x player) 800))
                    (when (> (x player) 800)
@@ -41,10 +44,19 @@
                      (setf (y player) 600))
                    (when (> (y player) 600)
                      (setf (y player) 0))
+                   (when (< (x asteroid) 0)
+                     (setf (x asteroid) 800))
+                   (when (> (x asteroid) 800)
+                     (setf (x asteroid) 0))
+                   (when (< (y asteroid) 0)
+                     (setf (y asteroid) 600))
+                   (when (> (y asteroid) 600)
+                     (setf (y asteroid) 0))
                    (gl:clear :color-buffer)
                    (gl:load-identity)
                    (gl:translate (center-x player) (center-y player) 0)
                    (draw player)
+                   (draw asteroid)
                    (gl:flush)
                    (gl-swap-window my-window))
             (:quit () t)))))))

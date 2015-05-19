@@ -1,4 +1,4 @@
-(in-package :asteroid.entities)
+(in-package :asteroids.entities)
 
 (defclass Box ()
   ((x :initarg :x

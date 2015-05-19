@@ -1,5 +1,5 @@
 (in-package :cl-user)
-(defpackage :asteroid.entities
+(defpackage :asteroids.entities
   (:use :cl
         :sdl2
         :asteroids.helpers)
@@ -24,6 +24,7 @@
            :entity
            :update
            :ship
+           :asteroid
            :sprite
            :color
            :draw
