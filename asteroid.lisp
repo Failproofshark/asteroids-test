@@ -10,18 +10,16 @@
    (rotation-angle
     :initform 0
     :accessor rotation-angle)
-   (width
-    :initform 0)
-   (height
-    :initform 0)
    (x
     :initform 20)
    (y
     :initform 20)
    (velocity
-    :initform (make-instance 'math-vector :direction 30 :magnitude 2)
+    :documentation "A math-vector representing the asteroid's velocity"
+    :initarg :velocity
     :accessor velocity)))
 
+;;The reason why we don't do the random initialization here is because random parameters are only set between each stages. In other words, we don't want random values when we create split asteroids after they are hit
 (defmethod initialize-instance :after ((asteroid asteroid) &key)
   (with-accessors ((hit-points hit-points) (width width) (height height)) asteroid
     (ecase hit-points

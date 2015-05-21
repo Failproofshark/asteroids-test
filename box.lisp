@@ -2,16 +2,12 @@
 
 (defclass Box ()
   ((x :initarg :x
-      :initform (error "Must supply an x coordinate")
       :accessor x)
    (y :initarg :y
-      :initform (error "Must supply an y coordinate")
       :accessor y)
    (width :initarg :width
-          :initform (error "Must supply a width")
           :accessor width)
    (height :initarg :height
-           :initform (error "Must supply a height")
            :accessor height)))
 
 (defgeneric top (Box)

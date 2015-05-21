@@ -30,8 +30,8 @@
 (defmethod handle-keydown-input ((ship ship) scancode)
   (with-accessors ((rotation-angle rotation-angle) (acceleration acceleration) (x x) (y y)) ship
     (cond
-      ((scancode= scancode :scancode-left) (incf rotation-angle 2))
-      ((scancode= scancode :scancode-right) (decf rotation-angle 2))
+      ((scancode= scancode :scancode-left) (incf rotation-angle 5))
+      ((scancode= scancode :scancode-right) (decf rotation-angle 5))
       ((scancode= scancode :scancode-up) (progn (setf (direction acceleration) rotation-angle)
                                                 (incf (magnitude acceleration) 0.005))))))
 
