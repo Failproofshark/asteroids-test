@@ -22,6 +22,7 @@
            :get-vector-components
            :vector+
            :entity
+           :boundary-check
            :update
            :ship
            :asteroid

@@ -16,9 +16,9 @@
   (:documentation "Returns the y vector component"))
 (defgeneric get-vector-components (math-vector)
   (:documentation "Returns the x and y vector components of the vector as a list"))
-(defgeneric vector+ (math-vector math-vector)
+(defgeneric vector+ (math-vector-1 math-vector-2)
   (:documentation "Perform vector addition"))
-(defgeneric dot-product (math-vector math-vector)
+(defgeneric dot-product (math-vector-1 math-vector-2)
   (:documentation "Find the dot product between two vectors"))
 
 (defmethod get-x-component ((math-vector math-vector))
