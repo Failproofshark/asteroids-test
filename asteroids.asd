@@ -7,6 +7,7 @@
                (:file "vector" :depends-on ("entities-package" "helpers"))
                (:file "sprite" :depends-on ("entities-package" "box"))
                (:file "entity" :depends-on ("entities-package" "sprite"))
+               (:file "boundary-behaviors" :depends-on ("entities-package" "box"))
                (:file "asteroid" :depends-on ("entities-package" "sprite" "box" "vector" "entity"))
                (:file "ship" :depends-on ("entities-package" "sprite" "box" "vector" "entity"))
                (:file "main" :depends-on ("box" "sprite" "ship"))))

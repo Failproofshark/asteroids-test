@@ -2,7 +2,7 @@
 
 (require :cl-opengl)
 
-(defclass Ship (entity)
+(defclass Ship (entity reset-behavior)
   ((color
     :initform '(0.3 0.5 0.2 1.0))
    (width

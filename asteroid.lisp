@@ -1,6 +1,6 @@
 (in-package :asteroids.entities)
 
-(defclass Asteroid (entity)
+(defclass Asteroid (entity reset-behavior)
   ((hit-points
     :documentation "Initially a number between 0-3. Essentially this determines the number of times this thing can be split as well as it's initial size"
     :initarg :hit-points

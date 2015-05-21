@@ -31,7 +31,8 @@
                                                                      -2)
                                                           :direction (random-range 30 85))))))
     (let ((player (make-instance 'Ship :x 400 :y 300))
-          (asteroids (generate-asteroids 4)))
+          (asteroids (generate-asteroids 4))
+          (bullets nil))
       (with-init (:everything)
         (with-window (my-window :title "Asteroids" :flags '(:shown :opengl))
           (with-gl-context (gl-context my-window)
@@ -41,7 +42,7 @@
             (gl:ortho 0 800 0 600 -10 10)
             (gl:matrix-mode :modelview)
             (gl:load-identity)
-            (gl:clear-color 1.0 1.0 1.0 1.0)
+            (gl:clear-color 0.0 0.0 0.0 0.0)
             (gl:clear :color-buffer)
             (with-event-loop (:method :poll)
               (:keydown
