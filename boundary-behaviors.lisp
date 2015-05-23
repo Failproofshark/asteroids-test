@@ -12,3 +12,13 @@
     (setf (y entity) y-limit))
   (when (> (y entity) y-limit)
     (setf (y entity) 0)))
+
+(defclass kill-behavior () ())
+(defmethod boundary-check ((entity kill-behavior) x-limit y-limit)
+  (when (or (< (x entity) 0)
+            (< (y entity) 0)
+            (> (x entity) x-limit)
+            (> (y entity) y-limit))
+    (setf (x entity) 99999)
+    (setf (magnitude (velocity entity)) 0)
+    (setf (launched entity) nil)))

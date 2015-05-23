@@ -26,7 +26,11 @@
            :reset-behavior
            :boundary-check
            :ship
+           :get-launched-bullets
            :asteroid
+           :bullet
+           :shoot
+           :launched
            :sprite
            :color
            :draw
