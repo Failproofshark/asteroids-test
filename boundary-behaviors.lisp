@@ -21,4 +21,4 @@
             (> (y entity) y-limit))
     (setf (x entity) 99999)
     (setf (magnitude (velocity entity)) 0)
-    (setf (launched entity) nil)))
+    (setf (off-screen entity) t)))

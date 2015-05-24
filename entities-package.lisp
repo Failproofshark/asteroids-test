@@ -30,7 +30,6 @@
            :asteroid
            :bullet
            :shoot
-           :launched
            :sprite
            :color
            :draw

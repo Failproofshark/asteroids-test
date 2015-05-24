@@ -40,7 +40,7 @@
              (let ((ammo (remove nil
                                  (map 'list
                                       #'(lambda (bullet)
-                                          (when (not (launched bullet))
+                                          (when (off-screen bullet)
                                             bullet))
                                       bullets))))
                (when ammo
@@ -76,6 +76,6 @@
   (remove nil
           (map 'list
                #'(lambda (bullet)
-                   (when (launched bullet)
+                   (unless (off-screen bullet)
                      bullet))
                (bullets ship))))

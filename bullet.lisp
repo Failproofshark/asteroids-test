@@ -6,25 +6,25 @@
    (x
     :initform 9999)
    (width
-    :initform 2)
+    :initform 3)
    (height
-    :initform 2)
+    :initform 3)
    (velocity
     :initform (make-instance 'math-vector)
     :accessor velocity)
-   (launched
-    :initform nil
-    :accessor launched)))
+   (off-screen
+    :initform t
+    :accessor off-screen)))
 
 (defgeneric shoot (bullet x y speed direction))
 
 (defmethod shoot ((bullet bullet) x-position y-position speed direction)
-  (with-accessors ((x x) (y y) (velocity velocity) (launched launched)) bullet
+  (with-accessors ((x x) (y y) (velocity velocity) (off-screen off-screen)) bullet
     (setf x x-position)
     (setf y y-position)
     (setf (magnitude velocity) speed)
     (setf (direction velocity) direction)
-    (setf launched t)))
+    (setf off-screen nil)))
 
 (defmethod update ((bullet bullet))
   (with-accessors ((velocity velocity) (x x) (y y)) bullet
