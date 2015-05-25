@@ -27,11 +27,19 @@
                                  :hit-points (+ 1 (random 3))
                                  :velocity (make-instance 'math-vector
                                                           :magnitude (if (coin-toss)
-                                                                     2
-                                                                     -2)
-                                                          :direction (random-range 30 85))))))
+                                                                         2
+                                                                         -2)
+                                                          :direction (random-range 30 85)))))
+           (player-killed (asteroids player)
+             (flet ((asteroid-player-collision (asteroid)
+                      (detect-collision player asteroid)))
+               (remove nil
+                       (map 'list
+                            #'asteroid-player-collision
+                            asteroids)))))
     (let ((player (make-instance 'Ship :x 400 :y 300))
-          (asteroids (generate-asteroids 4)))
+          (asteroids (generate-asteroids 4))
+          (game-over nil))
       (with-init (:everything)
         (with-window (my-window :title "Asteroids" :flags '(:shown :opengl))
           (with-gl-context (gl-context my-window)
@@ -53,22 +61,26 @@
                (let ((scancode (scancode-value keysym)))
                  (handle-keyup-input player scancode)))
               (:idle ()
-                     (map 'list
-                          #'(lambda (entity)
-                              (update entity)
-                              (boundary-check entity 800 600))
-                          (append `(,player)
-                                  (get-launched-bullets player)
-                                  asteroids))
-                     (gl:clear :color-buffer)
-                     (gl:load-identity)
-                     (gl:translate (center-x player) (center-y player) 0)
-                     (map 'list
-                          #'(lambda (entity)
-                              (draw entity))
-                          (append `(,player)
-                                  (get-launched-bullets player)
-                                  asteroids))
-                     (gl:flush)
-                     (gl-swap-window my-window))
+                     (unless game-over
+                       (map 'list
+                            #'(lambda (entity)
+                                (update entity)
+                                (boundary-check entity 800 600))
+                            (append `(,player)
+                                    (get-launched-bullets player)
+                                    asteroids))
+                       (when (player-killed asteroids player)
+                         (format t "killed")
+                         (setf game-over t))
+                       (gl:clear :color-buffer)
+                       (gl:load-identity)
+                       (gl:translate (center-x player) (center-y player) 0)
+                       (map 'list
+                            #'(lambda (entity)
+                                (draw entity))
+                            (append `(,player)
+                                    (get-launched-bullets player)
+                                    asteroids))
+                       (gl:flush)
+                       (gl-swap-window my-window)))
               (:quit () t))))))))

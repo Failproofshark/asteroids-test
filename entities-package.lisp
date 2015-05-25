@@ -14,6 +14,7 @@
            :right
            :center-x
            :center-y
+           :detect-collision
            :math-vector
            :direction
            :magnitude
