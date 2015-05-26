@@ -20,23 +20,23 @@
                  (random-range (car range-1) (cadr range-1))
                  (random-range (car range-2) (cadr range-2))))
            (generate-asteroids (number-of-asteroids)
-             (loop for i from 1 upto number-of-asteroids collect
-                  (make-instance 'asteroid
-                                 :x (split-random-range '(5 200) '(600 750))
-                                 :y (split-random-range '(5 100) '(400 550))
-                                 :hit-points (+ 1 (random 3))
-                                 :velocity (make-instance 'math-vector
-                                                          :magnitude (if (coin-toss)
-                                                                         2
-                                                                         -2)
-                                                          :direction (random-range 30 85)))))
+             (make-array 4 :initial-contents (loop for i from 1 upto number-of-asteroids collect
+                                                  (make-instance 'asteroid
+                                                                 :x (split-random-range '(5 200) '(600 750))
+                                                                 :y (split-random-range '(5 100) '(400 550))
+                                                                 :hit-points (+ 1 (random 3))
+                                                                 :velocity (make-instance 'math-vector
+                                                                                          :magnitude (if (coin-toss)
+                                                                                                         2
+                                                                                                         -2)
+                                                                                          :direction (random-range 30 85))))))
            (player-killed (asteroids player)
              (flet ((asteroid-player-collision (asteroid)
                       (detect-collision player asteroid)))
                (remove nil
                        (map 'list
                             #'asteroid-player-collision
-                            asteroids)))))
+                            (coerce asteroids 'list))))))
     (let ((player (make-instance 'Ship :x 400 :y 300))
           (asteroids (generate-asteroids 4))
           (game-over nil))
@@ -68,7 +68,7 @@
                                 (boundary-check entity 800 600))
                             (append `(,player)
                                     (get-launched-bullets player)
-                                    asteroids))
+                                    (coerce asteroids 'list)))
                        (when (player-killed asteroids player)
                          (format t "killed")
                          (setf game-over t))
@@ -80,7 +80,7 @@
                                 (draw entity))
                             (append `(,player)
                                     (get-launched-bullets player)
-                                    asteroids))
+                                    (coerce asteroids 'list)))
                        (gl:flush)
                        (gl-swap-window my-window)))
               (:quit () t))))))))

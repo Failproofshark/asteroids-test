@@ -18,6 +18,12 @@
 
 (defgeneric shoot (bullet x y speed direction))
 
+(defgeneric reload-bullet (bullet))
+
+(defmethod reload-bullet ((bullet bullet))
+  (setf (x bullet) 9999)
+  (setf (off-screen bullet) t))
+
 (defmethod shoot ((bullet bullet) x-position y-position speed direction)
   (with-accessors ((x x) (y y) (velocity velocity) (off-screen off-screen)) bullet
     (setf x x-position)

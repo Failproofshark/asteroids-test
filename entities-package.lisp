@@ -30,6 +30,7 @@
            :get-launched-bullets
            :asteroid
            :bullet
+           :reload-bullet
            :shoot
            :sprite
            :color
