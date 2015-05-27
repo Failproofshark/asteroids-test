@@ -38,16 +38,12 @@
                             #'asteroid-player-collision
                             asteroids))))
            (split-hit-asteroids (asteroids bullets)
-             (let ((hit-asteroids (remove 'nil
-                                          (remove-duplicates (loop for bullet in bullets collect
+             (let ((hit-asteroids (remove nil (remove-duplicates (loop for bullet in bullets collect
                                                                   (values-list (loop for asteroid in asteroids if (detect-collision asteroid bullet)
                                                                                   collect (progn (reload-bullet bullet)
                                                                                                  (split-asteroid asteroid)))))))))
                (when hit-asteroids
-                 (format t "~a~%" hit-asteroids))
-               (if hit-asteroids
-                   (progn (values t (append asteroids hit-asteroids)))
-                   nil))))
+                 (progn (values t (append asteroids hit-asteroids)))))))
     (let ((player (make-instance 'Ship :x 400 :y 300))
           (asteroids (generate-asteroids 4))
           (game-over nil))
