@@ -38,11 +38,18 @@
          (setf height 70)))))
 
 (defmethod split-asteroid ((asteroid asteroid))
-  (with-accessors ((hit-points hit-points) (velocity velocity)) asteroid
-    (decf hit-points)
-    (set-size asteroid)
-    (setf (direction velocity) (/ (direction velocity) 2))
-    asteroid))
+  (with-accessors ((hit-points hit-points) (velocity velocity) (x x) (y y)) asteroid
+    (let ((new-direction (+ (/ (direction velocity) 2) 45)))
+      (decf hit-points)
+      (set-size asteroid)
+      (setf (direction velocity) new-direction)
+      (make-instance 'asteroid
+                     :x x
+                     :y y
+                     :hit-points hit-points
+                     :velocity (make-instance 'math-vector
+                                              :magnitude (magnitude velocity)
+                                              :direction (* -1 new-direction))))))
 
 ;;The reason why we don't do the random initialization here is because random parameters are only set between each stages. In other words, we don't want random values when we create split asteroids after they are hit
 (defmethod initialize-instance :after ((asteroid asteroid) &key)

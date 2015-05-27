@@ -24,7 +24,7 @@
                   (make-instance 'asteroid
                                  :x (split-random-range '(5 200) '(600 750))
                                  :y (split-random-range '(5 100) '(400 550))
-                                 :hit-points (+ 1 (random 3))
+                                 :hit-points 3
                                  :velocity (make-instance 'math-vector
                                                           :magnitude (if (coin-toss)
                                                                          2
@@ -38,13 +38,16 @@
                             #'asteroid-player-collision
                             asteroids))))
            (split-hit-asteroids (asteroids bullets)
-             (let ((hit-asteroids (remove-duplicates (loop for bullet in bullets collect
-                                                          (values-list (loop for asteroid in asteroids when (detect-collision asteroid bullet)
-                                                                          collect (progn (reload-bullet bullet)
-                                                                                         (split-asteroid asteroid))))))))
-               (values (when hit-asteroids
-                         t)
-                       asteroids))))
+             (let ((hit-asteroids (remove 'nil
+                                          (remove-duplicates (loop for bullet in bullets collect
+                                                                  (values-list (loop for asteroid in asteroids if (detect-collision asteroid bullet)
+                                                                                  collect (progn (reload-bullet bullet)
+                                                                                                 (split-asteroid asteroid)))))))))
+               (when hit-asteroids
+                 (format t "~a~%" hit-asteroids))
+               (if hit-asteroids
+                   (progn (values t (append asteroids hit-asteroids)))
+                   nil))))
     (let ((player (make-instance 'Ship :x 400 :y 300))
           (asteroids (generate-asteroids 4))
           (game-over nil))
@@ -77,12 +80,12 @@
                             (append `(,player)
                                     (get-launched-bullets player)
                                     asteroids))
-                       (multiple-value-bind (found-hits new-asteroid-list) (split-hit-asteroids asteroids (get-launched-bullets player))
-                         (when found-hits
-                           (setf asteroids new-asteroid-list)))
                        (when (player-killed asteroids player)
                          (format t "killed")
                          (setf game-over t))
+                       (multiple-value-bind (found-hits new-asteroid-list) (split-hit-asteroids asteroids (get-launched-bullets player))
+                         (when found-hits
+                           (setf asteroids new-asteroid-list)))                       
                        (gl:clear :color-buffer)
                        (gl:load-identity)
                        (gl:translate (center-x player) (center-y player) 0)
