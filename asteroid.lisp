@@ -19,8 +19,13 @@
     :initarg :velocity
     :accessor velocity)))
 
-;;The reason why we don't do the random initialization here is because random parameters are only set between each stages. In other words, we don't want random values when we create split asteroids after they are hit
-(defmethod initialize-instance :after ((asteroid asteroid) &key)
+(defgeneric split-asteroid (asteroid)
+  (:documentation "Splits the asteroid into two asteroids IF it's hit points are in the positive. Returns two values, a boolean representing whether or not the asteroid split and a new asteroid with hit-points one less than the one passed in and a velocity vector going in the different direction. As a side effect the asteroid passed in will have it's hp reduced by one and the direction of it's velocity changed"))
+
+(defgeneric set-size (asteroid)
+  (:documentation "Sets the size of the asteroid according to it's HP"))
+
+(defmethod set-size ((asteroid asteroid))
   (with-accessors ((hit-points hit-points) (width width) (height height)) asteroid
     (ecase hit-points
       (0 (setf width 10)
@@ -31,6 +36,17 @@
          (setf height 40))
       (3 (setf width 70)
          (setf height 70)))))
+
+(defmethod split-asteroid ((asteroid asteroid))
+  (with-accessors ((hit-points hit-points) (velocity velocity)) asteroid
+    (decf hit-points)
+    (set-size asteroid)
+    (setf (direction velocity) (/ (direction velocity) 2))
+    asteroid))
+
+;;The reason why we don't do the random initialization here is because random parameters are only set between each stages. In other words, we don't want random values when we create split asteroids after they are hit
+(defmethod initialize-instance :after ((asteroid asteroid) &key)
+  (set-size asteroid))
 
 (defmethod update ((asteroid asteroid))
   (with-accessors ((velocity velocity) (rotation-angle rotation-angle) (x x) (y y)) asteroid

@@ -40,9 +40,11 @@
            (split-hit-asteroids (asteroids bullets)
              (let ((hit-asteroids (remove-duplicates (loop for bullet in bullets collect
                                                           (values-list (loop for asteroid in asteroids when (detect-collision asteroid bullet)
-                                                             collect (progn (reload-bullet bullet)
-                                                                            asteroid)))))))
-               (set-difference asteroids hit-asteroids))))
+                                                                          collect (progn (reload-bullet bullet)
+                                                                                         (split-asteroid asteroid))))))))
+               (values (when hit-asteroids
+                         t)
+                       asteroids))))
     (let ((player (make-instance 'Ship :x 400 :y 300))
           (asteroids (generate-asteroids 4))
           (game-over nil))
@@ -75,8 +77,8 @@
                             (append `(,player)
                                     (get-launched-bullets player)
                                     asteroids))
-                       (let ((new-asteroid-list (split-hit-asteroids asteroids (get-launched-bullets player))))
-                         (when (not (= (length new-asteroid-list) (length asteroids)))
+                       (multiple-value-bind (found-hits new-asteroid-list) (split-hit-asteroids asteroids (get-launched-bullets player))
+                         (when found-hits
                            (setf asteroids new-asteroid-list)))
                        (when (player-killed asteroids player)
                          (format t "killed")

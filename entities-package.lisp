@@ -29,6 +29,7 @@
            :ship
            :get-launched-bullets
            :asteroid
+           :split-asteroid
            :bullet
            :reload-bullet
            :shoot
