@@ -57,7 +57,7 @@
                            :y y
                            :hit-points hit-points
                            :velocity (make-instance 'math-vector
-                                                    :magnitude (magnitude velocity)
+                                                    :magnitude (+ (magnitude velocity) 1)
                                                     :direction (* -1 new-direction)))))))
 
 ;;The reason why we don't do the random initialization here is because random parameters are only set between each stages. In other words, we don't want random values when we create split asteroids after they are hit

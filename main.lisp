@@ -27,8 +27,8 @@
                                  :hit-points 3
                                  :velocity (make-instance 'math-vector
                                                           :magnitude (if (coin-toss)
-                                                                         2
-                                                                         -2)
+                                                                         1.5
+                                                                         -1.5)
                                                           :direction (random-range 30 85)))))
            (player-killed (asteroids player)
              (flet ((asteroid-player-collision (asteroid)
