@@ -21,7 +21,7 @@
     :accessor rotation-angle)
    ;;Technically speaking we could make a bullet pool for unlimited bullets but for now this will do.
    (bullets
-    :initform (loop for i from 0 upto 3 collect
+    :initform (loop for i from 0 upto 19 collect
                    (make-instance 'bullet))
     :accessor bullets)))
 

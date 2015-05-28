@@ -38,12 +38,20 @@
                             #'asteroid-player-collision
                             asteroids))))
            (split-hit-asteroids (asteroids bullets)
-             (let ((hit-asteroids (remove nil (remove-duplicates (loop for bullet in bullets collect
-                                                                  (values-list (loop for asteroid in asteroids if (detect-collision asteroid bullet)
-                                                                                  collect (progn (reload-bullet bullet)
-                                                                                                 (split-asteroid asteroid)))))))))
+             (let ((hit-asteroids nil))
+               (loop for bullet in bullets do
+                    (loop for asteroid in asteroids when (detect-collision asteroid bullet) do
+                         (reload-bullet bullet)
+                         (pushnew asteroid hit-asteroids)
+                         (return)))
                (when hit-asteroids
-                 (progn (values t (append asteroids hit-asteroids)))))))
+                 (values t
+                         (let ((new-asteroids (remove nil
+                                                      (map 'list
+                                                           #'(lambda (asteroid)
+                                                               (split-asteroid asteroid))
+                                                           hit-asteroids))))
+                           (append (remove-if #'is-dead asteroids) new-asteroids)))))))
     (let ((player (make-instance 'Ship :x 400 :y 300))
           (asteroids (generate-asteroids 4))
           (game-over nil))
@@ -81,7 +89,7 @@
                          (setf game-over t))
                        (multiple-value-bind (found-hits new-asteroid-list) (split-hit-asteroids asteroids (get-launched-bullets player))
                          (when found-hits
-                           (setf asteroids new-asteroid-list)))                       
+                           (setf asteroids new-asteroid-list)))
                        (gl:clear :color-buffer)
                        (gl:load-identity)
                        (gl:translate (center-x player) (center-y player) 0)

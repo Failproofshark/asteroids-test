@@ -30,6 +30,7 @@
            :get-launched-bullets
            :asteroid
            :split-asteroid
+           :is-dead
            :bullet
            :reload-bullet
            :shoot
