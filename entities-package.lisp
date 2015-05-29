@@ -4,10 +4,10 @@
         :sdl2
         :asteroids.helpers)
   (:export :Box
-           :x
-           :y
-           :width
-           :height
+           :box-x
+           :box-y
+           :box-width
+           :box-height
            :top
            :bottom
            :left
@@ -33,6 +33,10 @@
            :reload-bullet
            :shoot
            :sprite
+           :sprite-x
+           :sprite-y
+           :sprite-width
+           :sprite-height
            :color
            :draw
            :handle-keydown-input

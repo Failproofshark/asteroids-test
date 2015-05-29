@@ -22,8 +22,8 @@
            (generate-asteroids (number-of-asteroids)
              (loop for i from 1 upto number-of-asteroids collect
                   (make-instance 'asteroid
-                                 :x (split-random-range '(5 200) '(600 750))
-                                 :y (split-random-range '(5 100) '(400 550))
+                                 :sprite-x (split-random-range '(5 200) '(600 750))
+                                 :sprite-y (split-random-range '(5 100) '(400 550))
                                  :hit-points 3
                                  :velocity (make-instance 'math-vector
                                                           :magnitude (if (coin-toss)
@@ -52,7 +52,7 @@
                                                                (split-asteroid asteroid))
                                                            hit-asteroids))))
                            (append (remove-if #'is-dead asteroids) new-asteroids)))))))
-    (let ((player (make-instance 'Ship :x 400 :y 300))
+    (let ((player (make-instance 'Ship :sprite-x 400 :sprite-y 300))
           (asteroids (generate-asteroids 4))
           (game-over nil))
       (with-init (:everything)
