@@ -66,7 +66,7 @@
 
 (defmethod update ((asteroid asteroid))
   (with-accessors ((velocity velocity) (rotation-angle rotation-angle) (x x) (y y)) asteroid
-    ;;(setf rotation-angle (1+ rotation-angle))
+    (setf rotation-angle (1+ rotation-angle))
     (incf x (get-x-component velocity))
     (incf y (get-y-component velocity))))
 

@@ -92,7 +92,6 @@
                            (setf asteroids new-asteroid-list)))
                        (gl:clear :color-buffer)
                        (gl:load-identity)
-                       (gl:translate (center-x player) (center-y player) 0)
                        (map 'list
                             #'(lambda (entity)
                                 (draw entity))

@@ -34,11 +34,6 @@
 (defgeneric get-launched-bullets (Ship)
   (:documentation "Filter for launched bullets"))
 
-(defmethod initialize-instance :after ((ship ship) &key)
-  (rotate-box ship
-              "counter-clockwise"
-              (rotation-angle ship)))
-
 (defmethod handle-keydown-input ((ship ship) scancode)
   (with-accessors ((rotation-angle rotation-angle) (acceleration acceleration) (bullets bullets) (x x) (y y)) ship
     (flet ((shoot-bullet ()
@@ -60,13 +55,7 @@
 (defmethod handle-keyup-input ((ship ship) scancode)
   (with-accessors ((acceleration acceleration) (rotation-angle rotation-angle)) ship
     (cond
-      ((scancode= scancode :scancode-up) (setf (magnitude acceleration) 0))
-      ((scancode= scancode :scancode-left) (rotate-box ship
-                                                       "counter-clockwise"
-                                                       rotation-angle))
-      ((scancode= scancode :scancode-right) (rotate-box ship
-                                                        "clockwise"
-                                                        rotation-angle)))))
+      ((scancode= scancode :scancode-up) (setf (magnitude acceleration) 0)))))
 
 (defmethod update ((ship ship))
   (with-accessors ((x x) (y y) (rotation-angle rotation-angle) (acceleration acceleration) (velocity velocity)) ship
