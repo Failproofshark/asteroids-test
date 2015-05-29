@@ -34,6 +34,11 @@
 (defgeneric get-launched-bullets (Ship)
   (:documentation "Filter for launched bullets"))
 
+(defmethod initialize-instance :after ((ship ship) &key)
+  (rotate-box ship
+              "counter-clockwise"
+              (rotation-angle ship)))
+
 (defmethod handle-keydown-input ((ship ship) scancode)
   (with-accessors ((rotation-angle rotation-angle) (acceleration acceleration) (bullets bullets) (x x) (y y)) ship
     (flet ((shoot-bullet ()
@@ -44,7 +49,7 @@
                                             bullet))
                                       bullets))))
                (when ammo
-                 (shoot (car ammo) (center-x ship) (center-y ship) 5 rotation-angle)))))
+                 (shoot (car ammo) x y 5 rotation-angle)))))
       (cond
         ((scancode= scancode :scancode-left) (incf rotation-angle 5))
         ((scancode= scancode :scancode-right) (decf rotation-angle 5))
@@ -53,9 +58,15 @@
         ((scancode= scancode :scancode-space) (shoot-bullet))))))
 
 (defmethod handle-keyup-input ((ship ship) scancode)
-  (with-accessors ((acceleration acceleration)) ship
+  (with-accessors ((acceleration acceleration) (rotation-angle rotation-angle)) ship
     (cond
-      ((scancode= scancode :scancode-up) (setf (magnitude acceleration) 0)))))
+      ((scancode= scancode :scancode-up) (setf (magnitude acceleration) 0))
+      ((scancode= scancode :scancode-left) (rotate-box ship
+                                                       "counter-clockwise"
+                                                       rotation-angle))
+      ((scancode= scancode :scancode-right) (rotate-box ship
+                                                        "clockwise"
+                                                        rotation-angle)))))
 
 (defmethod update ((ship ship))
   (with-accessors ((x x) (y y) (rotation-angle rotation-angle) (acceleration acceleration) (velocity velocity)) ship
@@ -66,9 +77,9 @@
       (incf y resultant-y))))
 
 (defmethod draw ((ship ship))
-  (with-accessors ((rotation-angle rotation-angle)) ship
+  (with-accessors ((rotation-angle rotation-angle) (x x) (y y)) ship
     (gl:load-identity)
-    (gl:translate (center-x ship) (center-y ship) 0)
+    (gl:translate x y 0)
     (gl:rotate rotation-angle 0 0 1))
   (call-next-method))
 

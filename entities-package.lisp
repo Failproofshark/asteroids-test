@@ -15,6 +15,7 @@
            :center-x
            :center-y
            :detect-collision
+           :rotate-box
            :math-vector
            :direction
            :magnitude

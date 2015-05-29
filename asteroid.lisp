@@ -66,13 +66,13 @@
 
 (defmethod update ((asteroid asteroid))
   (with-accessors ((velocity velocity) (rotation-angle rotation-angle) (x x) (y y)) asteroid
-    (setf rotation-angle (1+ rotation-angle))
+    ;;(setf rotation-angle (1+ rotation-angle))
     (incf x (get-x-component velocity))
     (incf y (get-y-component velocity))))
 
 (defmethod draw ((asteroid asteroid))
-  (with-accessors ((rotation-angle rotation-angle)) asteroid
+  (with-accessors ((rotation-angle rotation-angle) (x x) (y y)) asteroid
     (gl:load-identity)
-    (gl:translate (center-x asteroid) (center-y asteroid) 0)
+    (gl:translate x y 0)
     (gl:rotate rotation-angle 0 0 1))
   (call-next-method))

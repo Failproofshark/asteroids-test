@@ -38,6 +38,7 @@
     (incf y (get-y-component velocity))))
 
 (defmethod draw ((bullet bullet))
-  (gl:load-identity)
-  (gl:translate (center-x bullet) (center-y bullet) 0)
-  (call-next-method))
+  (with-accessors ((x x) (y y)) bullet
+    (gl:load-identity)
+    (gl:translate x y 0)
+    (call-next-method)))
