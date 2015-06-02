@@ -7,7 +7,9 @@
 
 (in-package :asteroids)
 
+(require :sdl2-mixer)
 (require :cl-opengl)
+
 ;;IDEA
 (defun rungame ()
   ;;The need for split random range is so that we don't spawn an asteroid on, or unbelievably close to a ship when the level begins
@@ -52,10 +54,14 @@
                                                                (split-asteroid asteroid))
                                                            hit-asteroids))))
                            (append (remove-if #'is-dead asteroids) new-asteroids)))))))
-    (let ((player (make-instance 'Ship :sprite-x 400 :sprite-y 300))
-          (asteroids (generate-asteroids 4))
-          (game-over nil))
-      (with-init (:everything)
+    (with-init (:everything)
+      ;; SDL2-Mixer stuff
+      (sdl2-mixer:init :ogg)
+      (sdl2-mixer:open-audio 22050 :s16sys 2 1024)
+      (sdl2-mixer:allocate-channels 2)
+      (let ((player (make-instance 'Ship :sprite-x 400 :sprite-y 300))
+            (asteroids (generate-asteroids 4))
+            (game-over nil))
         (with-window (my-window :title "Asteroids" :flags '(:shown :opengl))
           (with-gl-context (gl-context my-window)
             (gl-make-current my-window gl-context)
@@ -100,4 +106,8 @@
                                     asteroids))
                        (gl:flush)
                        (gl-swap-window my-window)))
-              (:quit () t))))))))
+              (:quit ()
+                     (sdl2-mixer:halt-channel -1)
+                     (sdl2-mixer:close-audio)
+                     (sdl2-mixer:quit)
+                     t))))))))

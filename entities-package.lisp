@@ -40,4 +40,5 @@
            :color
            :draw
            :handle-keydown-input
-           :handle-keyup-input))
+           :handle-keyup-input
+           :channel-enum))

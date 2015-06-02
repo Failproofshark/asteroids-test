@@ -1,6 +1,7 @@
 (in-package :asteroids.entities)
 
 (require :cl-opengl)
+(require :sdl2-mixer)
 
 (defclass Ship (entity reset-behavior)
   ((color
@@ -27,7 +28,10 @@
    (bullets
     :initform (loop for i from 0 upto 19 collect
                    (make-instance 'bullet))
-    :accessor bullets)))
+    :accessor bullets)
+   (jet-sound-effect
+    :initform (sdl2-mixer:load-wav (asdf:system-relative-pathname 'asteroids "214663__hykenfreak__deep-space-ship-effect.ogg"))
+    :accessor jet-sound-effect)))
 
 (defgeneric handle-keydown-input (Ship scancode)
   (:documentation "Handle keydown events from the user"))
@@ -44,7 +48,7 @@
     (setf box-y sprite-y)))
 
 (defmethod handle-keydown-input ((ship ship) scancode)
-  (with-accessors ((rotation-angle rotation-angle) (acceleration acceleration) (bullets bullets) (box-x box-x) (box-y box-y)) ship
+  (with-accessors ((rotation-angle rotation-angle) (acceleration acceleration) (bullets bullets) (box-x box-x) (box-y box-y) (jet-sound-effect jet-sound-effect)) ship
     (flet ((shoot-bullet ()
              (let ((ammo (remove nil
                                  (map 'list
@@ -57,14 +61,17 @@
       (cond
         ((scancode= scancode :scancode-left) (incf rotation-angle 5))
         ((scancode= scancode :scancode-right) (decf rotation-angle 5))
-        ((scancode= scancode :scancode-up) (progn (setf (direction acceleration) rotation-angle)
+        ((scancode= scancode :scancode-up) (progn (when (= 0 (sdl2-mixer:playing (getf channel-enum  :jets)))
+                                                    (sdl2-mixer:play-channel (getf channel-enum :jets) jet-sound-effect 0))
+                                                  (setf (direction acceleration) rotation-angle)
                                                   (incf (magnitude acceleration) 0.005)))
         ((scancode= scancode :scancode-space) (shoot-bullet))))))
 
 (defmethod handle-keyup-input ((ship ship) scancode)
   (with-accessors ((acceleration acceleration) (rotation-angle rotation-angle)) ship
     (cond
-      ((scancode= scancode :scancode-up) (setf (magnitude acceleration) 0)))))
+      ((scancode= scancode :scancode-up) (progn (sdl2-mixer:halt-channel (getf channel-enum :jets))
+                                                (setf (magnitude acceleration) 0))))))
 
 (defmethod update ((ship ship))
   (with-accessors ((sprite-x sprite-x) (sprite-y sprite-y) (box-x box-x) (box-y box-y) (rotation-angle rotation-angle) (acceleration acceleration) (velocity velocity)) ship
