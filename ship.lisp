@@ -31,7 +31,10 @@
     :accessor bullets)
    (jet-sound-effect
     :initform (sdl2-mixer:load-wav (asdf:system-relative-pathname 'asteroids "214663__hykenfreak__deep-space-ship-effect.ogg"))
-    :accessor jet-sound-effect)))
+    :accessor jet-sound-effect)
+   (bullet-sound-effect
+    :initform (sdl2-mixer:load-wav (asdf:system-relative-pathname 'asteroids "96692__cgeffex__asteroids-ship-fire.ogg"))
+    :accessor bullet-sound-effect)))
 
 (defgeneric handle-keydown-input (Ship scancode)
   (:documentation "Handle keydown events from the user"))
@@ -48,7 +51,7 @@
     (setf box-y sprite-y)))
 
 (defmethod handle-keydown-input ((ship ship) scancode)
-  (with-accessors ((rotation-angle rotation-angle) (acceleration acceleration) (bullets bullets) (box-x box-x) (box-y box-y) (jet-sound-effect jet-sound-effect)) ship
+  (with-accessors ((rotation-angle rotation-angle) (acceleration acceleration) (bullets bullets) (box-x box-x) (box-y box-y) (jet-sound-effect jet-sound-effect) (bullet-sound-effect bullet-sound-effect)) ship
     (flet ((shoot-bullet ()
              (let ((ammo (remove nil
                                  (map 'list
@@ -65,7 +68,9 @@
                                                     (sdl2-mixer:play-channel (getf channel-enum :jets) jet-sound-effect 0))
                                                   (setf (direction acceleration) rotation-angle)
                                                   (incf (magnitude acceleration) 0.005)))
-        ((scancode= scancode :scancode-space) (shoot-bullet))))))
+        ((scancode= scancode :scancode-space) (progn (when (= 0 (sdl2-mixer:playing (getf channel-enum :bullets)))
+                                                       (sdl2-mixer:play-channel (getf channel-enum :bullets) bullet-sound-effect 0))
+                                                     (shoot-bullet)))))))
 
 (defmethod handle-keyup-input ((ship ship) scancode)
   (with-accessors ((acceleration acceleration) (rotation-angle rotation-angle)) ship
