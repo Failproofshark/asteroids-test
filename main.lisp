@@ -58,7 +58,7 @@
       ;; SDL2-Mixer stuff
       (sdl2-mixer:init :ogg)
       (sdl2-mixer:open-audio 22050 :s16sys 2 1024)
-      (sdl2-mixer:allocate-channels 2)
+      (sdl2-mixer:allocate-channels 3)
       (let ((player (make-instance 'Ship :sprite-x 400 :sprite-y 300))
             (asteroids (generate-asteroids 4))
             (game-over nil))

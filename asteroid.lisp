@@ -1,5 +1,7 @@
 (in-package :asteroids.entities)
 
+(require :sdl2-mixer)
+
 (defclass Asteroid (entity reset-behavior)
   ((hit-points
     :documentation "Initially a number between 0-3. Essentially this determines the number of times this thing can be split as well as it's initial size"
@@ -13,7 +15,10 @@
    (velocity
     :documentation "A math-vector representing the asteroid's velocity"
     :initarg :velocity
-    :accessor velocity)))
+    :accessor velocity)
+   (explosion-sound-effect
+    :initform (sdl2-mixer:load-wav (asdf:system-relative-pathname 'asteroids "250712__aiwha__explosion.ogg"))
+    :accessor explosion-sound-effect)))
 
 (defgeneric split-asteroid (asteroid)
   (:documentation "Splits the asteroid into two asteroids IF it's hit points are in the positive. Returns two values, a boolean representing whether or not the asteroid split and a new asteroid with hit-points one less than the one passed in and a velocity vector going in the different direction. As a side effect the asteroid passed in will have it's hp reduced by one and the direction of it's velocity changed"))
@@ -46,7 +51,9 @@
   (< (hit-points asteroid) 0))
 
 (defmethod split-asteroid ((asteroid asteroid))
-  (with-accessors ((hit-points hit-points) (velocity velocity) (sprite-x sprite-x) (sprite-y sprite-y)) asteroid
+  (with-accessors ((hit-points hit-points) (velocity velocity) (sprite-x sprite-x) (sprite-y sprite-y) (explosion-sound-effect explosion-sound-effect)) asteroid
+    (when (= 0 (sdl2-mixer:playing (getf channel-enum :asteroid-explosion)))
+      (sdl2-mixer:play-channel (getf channel-enum :asteroid-explosion) explosion-sound-effect 0))
     (let ((new-direction (+ (/ (direction velocity) 2) 10)))
       (decf hit-points)
       (when (> hit-points -1)

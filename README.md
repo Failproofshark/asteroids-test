@@ -11,3 +11,6 @@ All sounds were taken from freesound.org.
 * [Asteroids Ship Fire](https://www.freesound.org/people/CGEffex/sounds/96692/)
   * [License](https://creativecommons.org/licenses/by/3.0/)
   * I encoded it to ogg from wave format
+* [Explosion](https://www.freesound.org/people/Aiwha/sounds/250712/)
+  * [License](https://creativecommons.org/licenses/by/3.0/)
+  * I encoded it to ogg from wave format  
