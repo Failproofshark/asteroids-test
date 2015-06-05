@@ -34,7 +34,13 @@
     :accessor jet-sound-effect)
    (bullet-sound-effect
     :initform (sdl2-mixer:load-wav (asdf:system-relative-pathname 'asteroids "96692__cgeffex__asteroids-ship-fire.ogg"))
-    :accessor bullet-sound-effect)))
+    :accessor bullet-sound-effect)
+   (crash-soud-effect
+    :initform (sdl2-mixer:load-wav (asdf:system-relative-pathname 'asteroids "250712__aiwha__explosion.ogg"))
+    :accessor crash-sound-effect)
+   (lives
+    :initform 3
+    :accessor lives)))
 
 (defgeneric handle-keydown-input (Ship scancode)
   (:documentation "Handle keydown events from the user"))
@@ -44,6 +50,9 @@
 
 (defgeneric get-launched-bullets (Ship)
   (:documentation "Filter for launched bullets"))
+
+(defgeneric kill-ship (Ship)
+  (:documentation "Subtract a life from the ship"))
 
 (defmethod intialize-instance :after ((ship ship) &key)
   (with-accessors ((box-x box-x) (box-y box-y) (sprite-x sprite-x) (sprite-y sprite-y)) ship
@@ -112,3 +121,9 @@
                    (unless (off-screen bullet)
                      bullet))
                (bullets ship))))
+
+(defmethod kill-ship ((ship ship))
+  (with-accessors ((crash-sound-effect crash-sound-effect) (lives lives)) ship
+    (decf lives)
+    (when (= 0 (sdl2-mixer:playing (getf channel-enum :asteroid-explosion)))
+      (sdl2-mixer:play-channel (getf channel-enum :asteroid-explosion) crash-sound-effect 0))))

@@ -25,6 +25,7 @@
            :reset-behavior
            :boundary-check
            :ship
+           :kill-ship
            :get-launched-bullets
            :asteroid
            :split-asteroid

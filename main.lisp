@@ -92,6 +92,7 @@
                                     asteroids))
                        (when (player-killed asteroids player)
                          (format t "killed")
+                         (kill-ship player)
                          (setf game-over t))
                        (multiple-value-bind (found-hits new-asteroid-list) (split-hit-asteroids asteroids (get-launched-bullets player))
                          (when found-hits
