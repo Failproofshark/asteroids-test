@@ -91,9 +91,11 @@
                                     (get-launched-bullets player)
                                     asteroids))
                        (when (player-killed asteroids player)
-                         (format t "killed")
                          (kill-ship player)
-                         (setf game-over t))
+                         (if (= 0 (lives player))
+                             (setf game-over t)
+                             (progn (set-ship-position player 400 300)
+                                    (setf asteroids (generate-asteroids 4)))))
                        (multiple-value-bind (found-hits new-asteroid-list) (split-hit-asteroids asteroids (get-launched-bullets player))
                          (when found-hits
                            (setf asteroids new-asteroid-list)))

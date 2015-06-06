@@ -54,6 +54,9 @@
 (defgeneric kill-ship (Ship)
   (:documentation "Subtract a life from the ship"))
 
+(defgeneric set-ship-position (Ship x y)
+  (:documentation "Sets the position of the ship"))
+
 (defmethod intialize-instance :after ((ship ship) &key)
   (with-accessors ((box-x box-x) (box-y box-y) (sprite-x sprite-x) (sprite-y sprite-y)) ship
     (setf box-x sprite-x)
@@ -121,6 +124,10 @@
                    (unless (off-screen bullet)
                      bullet))
                (bullets ship))))
+
+(defmethod set-ship-position ((ship ship) x y)
+  (with-accessors ((sprite-x sprite-x) (sprite-y sprite-y) (box-x box-x) (box-y box-y)) ship
+    (setf sprite-x x sprite-y y box-x x box-y y)))
 
 (defmethod kill-ship ((ship ship))
   (with-accessors ((crash-sound-effect crash-sound-effect) (lives lives)) ship
