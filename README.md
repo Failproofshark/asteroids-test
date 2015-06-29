@@ -1,6 +1,6 @@
 #Asteroids
 
-This is an implementation of the game Asteroids. I built this as a little test game to understand how SDL2 works with Common Lisp
+This is an implementation of the game [Asteroids](https://en.wikipedia.org/wiki/Asteroids_%28video_game%29). I built this as a little test game to understand how SDL2 works with Common Lisp
 
 ## Sound effects
 All sounds were taken from freesound.org.
